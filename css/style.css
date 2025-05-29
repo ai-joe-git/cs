@@ -96,15 +96,21 @@ body {
     padding: 0 var(--space-lg);
 }
 
-/* Navigation */
+/* Navigation - Fixed Version */
 .nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: var(--color-secondary);
-    border-bottom: var(--border-width) solid var(--color-primary);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: var(--border-width) solid var(--color-secondary);
     z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.nav.scrolled {
+    background: rgba(0, 0, 0, 0.98);
 }
 
 .nav-container {
@@ -120,6 +126,7 @@ body {
     font-size: var(--font-size-2xl);
     font-weight: 900;
     letter-spacing: -0.02em;
+    color: var(--color-secondary);
 }
 
 .brand-accent {
@@ -133,14 +140,29 @@ body {
     border: none;
     cursor: pointer;
     padding: var(--space-sm);
+    position: relative;
+    z-index: 10001;
 }
 
 .hamburger-line {
     width: 25px;
     height: 3px;
-    background: var(--color-primary);
+    background: var(--color-secondary);
     margin: 3px 0;
-    transition: var(--transition-fast);
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.nav-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
 }
 
 .nav-menu {
@@ -151,13 +173,14 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: var(--color-primary);
+    color: var(--color-secondary);
     font-weight: 700;
     font-size: var(--font-size-lg);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     transition: var(--transition-fast);
     border-bottom: 3px solid transparent;
+    padding: var(--space-sm) 0;
 }
 
 .nav-menu a:hover,
@@ -678,6 +701,7 @@ body {
 
 .form-group {
     margin-bottom: var(--space-lg);
+    position: relative;
 }
 
 .form-group label {
@@ -687,6 +711,7 @@ body {
     text-transform: uppercase;
     font-size: var(--font-size-sm);
     letter-spacing: 0.05em;
+    transition: all var(--transition-normal);
 }
 
 .form-group input,
@@ -801,6 +826,155 @@ body {
     font-weight: 700;
 }
 
+/* Animation styles */
+.reveal-element {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-element.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Glitch effect */
+.glitch-active {
+    animation: glitch 0.5s ease-in-out;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-2px) skew(-1deg); }
+    20% { transform: translateX(2px) skew(1deg); }
+    30% { transform: translateX(-1px) skew(-0.5deg); }
+    40% { transform: translateX(1px) skew(0.5deg); }
+    50% { transform: translateX(-2px) skew(-1deg); }
+    60% { transform: translateX(2px) skew(1deg); }
+    70% { transform: translateX(-1px) skew(-0.5deg); }
+    80% { transform: translateX(1px) skew(0.5deg); }
+    90% { transform: translateX(-2px) skew(-1deg); }
+}
+
+/* Form field animations */
+.field-focused label {
+    color: var(--color-accent);
+    transform: translateY(-5px);
+    font-size: var(--font-size-xs);
+}
+
+/* Button ripple effect */
+.button-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    width: 20px;
+    height: 20px;
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Success overlay */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.success-message {
+    background: var(--color-secondary);
+    border: var(--border-width) solid var(--color-success);
+    padding: var(--space-2xl);
+    max-width: 500px;
+    text-align: center;
+    box-shadow: var(--shadow-brutal);
+}
+
+.success-message h3 {
+    color: var(--color-success);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-lg);
+    text-transform: uppercase;
+}
+
+.success-close {
+    background: var(--color-success);
+    color: var(--color-secondary);
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: var(--space-lg);
+    transition: var(--transition-normal);
+}
+
+.success-close:hover {
+    background: var(--color-primary);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* High contrast mode */
+.high-contrast {
+    filter: contrast(150%) brightness(120%);
+}
+
+.high-contrast-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    border: 2px solid var(--color-accent);
+    padding: var(--space-sm);
+    font-size: var(--font-size-xs);
+    z-index: 9998;
+}
+
+/* Error states */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: var(--color-critical);
+    background-color: rgba(255, 0, 102, 0.1);
+}
+
+.error-message {
+    color: var(--color-critical);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    margin-top: var(--space-xs);
+    text-transform: uppercase;
+}
+
+/* Paused state for performance */
+.paused * {
+    animation-play-state: paused !important;
+}
+
 /* Utility Classes */
 .sr-only {
     position: absolute;
@@ -830,4 +1004,21 @@ body {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* Fix navigation visibility */
+.nav-menu a {
+    color: var(--color-secondary) !important;
+}
+
+.brand-text {
+    color: var(--color-secondary) !important;
+}
+
+.nav {
+    background: rgba(0, 0, 0, 0.95) !important;
+}
+
+.nav.scrolled {
+    background: rgba(0, 0, 0, 0.98) !important;
 }
