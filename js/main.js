@@ -8,7 +8,7 @@
     const contactForm = document.querySelector('.contact-form');
     const ctaButtons = document.querySelectorAll('.cta-button, .price-cta');
 
-    // Navigation functionality - Fixed Version
+    // Navigation functionality - No background change on scroll
     function initNavigation() {
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
@@ -58,7 +58,7 @@
                 });
             });
 
-                        // Close menu when clicking outside (only on menu area)
+                        // Close menu when clicking outside
             navMenu.addEventListener('click', (e) => {
                 if (e.target === navMenu) {
                     const scrollY = body.style.top;
@@ -89,14 +89,7 @@
             });
         }
 
-        // Handle navigation background on scroll
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
+        // Navigation stays dark always - no background change on scroll
     }
 
     // Smooth scrolling for anchor links
@@ -453,3 +446,4 @@
     });
 
 })();
+
