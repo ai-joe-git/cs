@@ -134,30 +134,6 @@
         });
     }
 
-    // Smooth reveal animations
-    function initRevealAnimations() {
-        const revealElements = document.querySelectorAll('.process-step, .threat-card, .problem-block');
-        
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('revealed');
-                    }, index * 100);
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        revealElements.forEach(element => {
-            element.classList.add('reveal-element');
-            revealObserver.observe(element);
-        });
-    }
-
     // Form field focus animations
     function initFormAnimations() {
         const formFields = document.querySelectorAll('.form-group input, .form-group select, .form-group textarea');
@@ -239,8 +215,8 @@
             const nav = document.querySelector('.nav');
             if (nav) {
                 nav.style.backgroundColor = scrolled > 50 ? 
-                    'rgba(255, 255, 255, 0.95)' : 
-                    'rgba(255, 255, 255, 1)';
+                    'rgba(0, 0, 0, 0.98)' : 
+                    'rgba(0, 0, 0, 0.95)';
             }
             
             // Update threat matrix rotation
@@ -274,7 +250,6 @@
             initParallaxEffects();
             initCounterAnimation();
             initGlitchEffects();
-            initRevealAnimations();
             initOptimizedScrollEffects();
         }
         
