@@ -96,21 +96,20 @@ body {
     padding: 0 var(--space-lg);
 }
 
-/* Navigation - Fixed Version */
+/* Navigation - Keep Dark Always */
 .nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.95) !important;
     backdrop-filter: blur(10px);
     border-bottom: var(--border-width) solid var(--color-secondary);
     z-index: 1000;
-    transition: background-color 0.3s ease;
 }
 
 .nav.scrolled {
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(0, 0, 0, 0.95) !important;
 }
 
 .nav-container {
@@ -126,7 +125,7 @@ body {
     font-size: var(--font-size-2xl);
     font-weight: 900;
     letter-spacing: -0.02em;
-    color: var(--color-secondary);
+    color: var(--color-secondary) !important;
 }
 
 .brand-accent {
@@ -173,7 +172,7 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: var(--color-secondary);
+    color: var(--color-secondary) !important;
     font-weight: 700;
     font-size: var(--font-size-lg);
     text-transform: uppercase;
@@ -188,7 +187,7 @@ body {
     border-bottom-color: var(--color-accent);
 }
 
-/* Hero Section */
+/* Hero Section - Fixed Animation */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -214,6 +213,8 @@ body {
     margin-bottom: var(--space-xl);
     text-transform: uppercase;
     letter-spacing: -0.02em;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .hero-accent {
@@ -226,6 +227,8 @@ body {
     line-height: 1.4;
     margin-bottom: var(--space-2xl);
     font-weight: 400;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .hero-stats {
@@ -1004,21 +1007,4 @@ body {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-}
-
-/* Fix navigation visibility */
-.nav-menu a {
-    color: var(--color-secondary) !important;
-}
-
-.brand-text {
-    color: var(--color-secondary) !important;
-}
-
-.nav {
-    background: rgba(0, 0, 0, 0.95) !important;
-}
-
-.nav.scrolled {
-    background: rgba(0, 0, 0, 0.98) !important;
 }
