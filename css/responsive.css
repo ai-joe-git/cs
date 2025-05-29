@@ -27,7 +27,7 @@
     }
 }
 
-/* Mobile Navigation - Fixed Version */
+/* Mobile Navigation - Fixed Version with Original Colors */
 @media (max-width: 768px) {
     .nav-toggle {
         display: flex;
@@ -39,7 +39,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.98);
+        background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(15px);
         flex-direction: column;
         justify-content: center;
@@ -58,7 +58,7 @@
     
     .nav-menu a {
         font-size: var(--font-size-2xl);
-        color: var(--color-secondary);
+        color: var(--color-primary);
         padding: var(--space-lg);
         border-bottom: 3px solid transparent;
         transition: all 0.3s ease;
@@ -79,28 +79,37 @@
     
     /* Ensure brand stays visible */
     .brand-text {
-        color: var(--color-secondary);
+        color: var(--color-primary);
         position: relative;
         z-index: 10001;
     }
     
-    /* Hero Mobile Fix */
+    /* Hero Mobile Fix - Ensure Full Visibility */
+    .hero {
+        min-height: 100vh;
+        padding-top: 100px;
+    }
+    
     .hero-title {
         font-size: var(--font-size-3xl);
         opacity: 1 !important;
         transform: none !important;
+        margin-bottom: var(--space-xl);
     }
     
     .hero-subtitle {
-        font-size: var(--font-size-base);
+        font-size: var(--font-size-lg);
         opacity: 1 !important;
         transform: none !important;
+        margin-bottom: var(--space-2xl);
     }
     
     .hero-container {
         grid-template-columns: 1fr;
         gap: var(--space-2xl);
         text-align: center;
+        min-height: calc(100vh - 100px);
+        align-items: center;
     }
     
     .hero-stats {
@@ -187,7 +196,7 @@
     }
     
     .hero {
-        min-height: auto;
+        min-height: 100vh;
         padding: var(--space-2xl) 0;
     }
     
