@@ -25,7 +25,7 @@
         }
     }
 
-    // Typing animation for hero title
+    // Typing animation for hero title with much faster red part
     function initTypingAnimation() {
         const heroTitle = document.querySelector('.hero-title');
         if (!heroTitle) return;
@@ -40,16 +40,23 @@
             lineElement.className = lineIndex === 1 ? 'hero-accent' : '';
             heroTitle.appendChild(lineElement);
             
-            // Type each character
+            // Type each character with different speeds
             let charIndex = 0;
-            const typeInterval = setInterval(() => {
-                if (charIndex < line.length) {
-                    lineElement.textContent += line[charIndex];
-                    charIndex++;
-                } else {
-                    clearInterval(typeInterval);
-                }
-            }, 50 + (lineIndex * 1000)); // Delay second line
+            const baseDelay = 80; // Normal speed for first line
+            const redLineDelay = 15; // Much faster for red part
+            
+            const startDelay = lineIndex === 1 ? 2000 : 0; // Start red line after 2 seconds
+            
+            setTimeout(() => {
+                const typeInterval = setInterval(() => {
+                    if (charIndex < line.length) {
+                        lineElement.textContent += line[charIndex];
+                        charIndex++;
+                    } else {
+                        clearInterval(typeInterval);
+                    }
+                }, lineIndex === 1 ? redLineDelay : baseDelay);
+            }, startDelay);
         });
     }
 
@@ -211,14 +218,6 @@
         function updateScrollEffects() {
             const scrolled = window.pageYOffset;
             
-            // Update navigation opacity based on scroll
-            const nav = document.querySelector('.nav');
-            if (nav) {
-                nav.style.backgroundColor = scrolled > 50 ? 
-                    'rgba(0, 0, 0, 0.98)' : 
-                    'rgba(0, 0, 0, 0.95)';
-            }
-            
             // Update threat matrix rotation
             const threatMatrix = document.querySelector('.threat-matrix');
             if (threatMatrix) {
@@ -251,6 +250,13 @@
             initCounterAnimation();
             initGlitchEffects();
             initOptimizedScrollEffects();
+        } else {
+            // Even with reduced motion, ensure text is visible
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                heroTitle.style.opacity = '1';
+                heroTitle.style.transform = 'none';
+            }
         }
         
         // Always initialize these (they're essential for UX)
