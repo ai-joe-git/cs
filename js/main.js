@@ -298,6 +298,82 @@
         }
     }
 
-    // Accessibility enhancements
+        // Accessibility enhancements
     function initAccessibilityFeatures() {
-        //
+        // Manage focus for keyboard users
+        const focusableElements = 'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        const firstFocusableElement = document.querySelector(focusableElements);
+        const lastFocusableElement = document.querySelectorAll(focusableElements)[document.querySelectorAll(focusableElements).length - 1];
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) { // Shift + Tab
+                    if (document.activeElement === firstFocusableElement) {
+                        e.preventDefault();
+                        lastFocusableElement.focus();
+                    }
+                } else { // Tab
+                    if (document.activeElement === lastFocusableElement) {
+                        e.preventDefault();
+                        firstFocusableElement.focus();
+                    }
+                }
+            }
+        });
+
+        // ARIA live region for dynamic content updates
+        const liveRegion = document.createElement('div');
+        liveRegion.setAttribute('aria-live', 'polite');
+        liveRegion.setAttribute('aria-atomic', 'true');
+        liveRegion.className = 'sr-only';
+        document.body.appendChild(liveRegion);
+
+        // Announce form submission success
+        if (contactForm) {
+            contactForm.addEventListener('submit', () => {
+                liveRegion.textContent = 'Form submitted successfully. We will contact you shortly.';
+            });
+        }
+
+        // High contrast mode toggle
+        const highContrastToggle = document.createElement('button');
+        highContrastToggle.textContent = 'Toggle High Contrast';
+        highContrastToggle.className = 'high-contrast-toggle sr-only';
+        highContrastToggle.addEventListener('focus', () => {
+            highContrastToggle.classList.remove('sr-only');
+        });
+        highContrastToggle.addEventListener('blur', () => {
+            highContrastToggle.classList.add('sr-only');
+        });
+        highContrastToggle.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+        });
+        document.body.appendChild(highContrastToggle);
+    }
+
+    // Initialize all features
+    function init() {
+        initNavigation();
+        initSmoothScrolling();
+        initFormHandling();
+        initScrollAnimations();
+        initPerformanceMonitoring();
+        initSecurityFeatures();
+        initAccessibilityFeatures();
+    }
+
+    // Run init on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', init);
+
+    // Handle page visibility changes for performance
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // Pause animations when page is hidden
+            document.body.classList.add('paused');
+        } else {
+            // Resume animations when page is visible
+            document.body.classList.remove('paused');
+        }
+    });
+
+})();
