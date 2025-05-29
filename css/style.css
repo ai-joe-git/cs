@@ -685,7 +685,7 @@ body {
     border: var(--border-width) solid var(--color-primary);
 }
 
-/* Form Styles */
+/* Form Styles - Fixed Text Visibility */
 .contact-form {
     border: var(--border-width) solid var(--color-primary);
     padding: var(--space-2xl);
@@ -706,6 +706,7 @@ body {
     font-size: var(--font-size-sm);
     letter-spacing: 0.05em;
     transition: all var(--transition-normal);
+    color: var(--color-primary) !important;
 }
 
 .form-group input,
@@ -714,10 +715,11 @@ body {
     width: 100%;
     padding: var(--space-md);
     border: var(--border-width) solid var(--color-primary);
-    background: var(--color-secondary);
+    background: var(--color-secondary) !important;
     font-family: var(--font-primary);
     font-size: var(--font-size-base);
     font-weight: 700;
+    color: var(--color-primary) !important;
 }
 
 .form-group input:focus,
@@ -726,6 +728,19 @@ body {
     outline: none;
     border-color: var(--color-accent);
     box-shadow: 0 0 0 3px var(--color-accent);
+    background: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+    opacity: 1;
+}
+
+.form-group select option {
+    background: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
 }
 
 .form-group small {
