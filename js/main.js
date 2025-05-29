@@ -8,49 +8,95 @@
     const contactForm = document.querySelector('.contact-form');
     const ctaButtons = document.querySelectorAll('.cta-button, .price-cta');
 
-    // Navigation functionality
+    // Navigation functionality - Fixed Version
     function initNavigation() {
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const nav = document.querySelector('.nav');
+        const body = document.body;
+
         if (navToggle && navMenu) {
-            navToggle.addEventListener('click', toggleMobileMenu);
-            
+            navToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                
+                navToggle.setAttribute('aria-expanded', !isExpanded);
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                
+                // Prevent body scroll when menu is open
+                if (!isExpanded) {
+                    body.style.overflow = 'hidden';
+                    body.style.position = 'fixed';
+                    body.style.width = '100%';
+                    body.style.top = `-${window.scrollY}px`;
+                } else {
+                    const scrollY = body.style.top;
+                    body.style.overflow = '';
+                    body.style.position = '';
+                    body.style.width = '';
+                    body.style.top = '';
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                }
+            });
+
             // Close menu when clicking on links
             const navLinks = navMenu.querySelectorAll('a');
             navLinks.forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
+                link.addEventListener('click', () => {
+                    const scrollY = body.style.top;
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    body.style.overflow = '';
+                    body.style.position = '';
+                    body.style.width = '';
+                    body.style.top = '';
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                });
             });
 
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                    closeMobileMenu();
+                        // Close menu when clicking outside (only on menu area)
+            navMenu.addEventListener('click', (e) => {
+                if (e.target === navMenu) {
+                    const scrollY = body.style.top;
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    body.style.overflow = '';
+                    body.style.position = '';
+                    body.style.width = '';
+                    body.style.top = '';
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
                 }
             });
 
             // Handle escape key
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeMobileMenu();
+                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                    const scrollY = body.style.top;
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    body.style.overflow = '';
+                    body.style.position = '';
+                    body.style.width = '';
+                    body.style.top = '';
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
                 }
             });
         }
-    }
 
-    function toggleMobileMenu() {
-        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-        
-        navToggle.setAttribute('aria-expanded', !isExpanded);
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = isExpanded ? 'auto' : 'hidden';
-    }
-
-    function closeMobileMenu() {
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        // Handle navigation background on scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
     }
 
     // Smooth scrolling for anchor links
@@ -75,7 +121,20 @@
                     });
 
                     // Close mobile menu if open
-                    closeMobileMenu();
+                    const navToggle = document.querySelector('.nav-toggle');
+                    const navMenu = document.querySelector('.nav-menu');
+                    const body = document.body;
+                    
+                    if (navMenu && navMenu.classList.contains('active')) {
+                        const scrollY = body.style.top;
+                        navToggle.setAttribute('aria-expanded', 'false');
+                        navToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        body.style.overflow = '';
+                        body.style.position = '';
+                        body.style.width = '';
+                        body.style.top = '';
+                    }
                 }
             });
         });
@@ -225,15 +284,23 @@
 
     // Intersection Observer for animations
     function initScrollAnimations() {
+        // Different settings for mobile and desktop
+        const isMobile = window.innerWidth <= 768;
+        
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: isMobile ? 0.1 : 0.2, // Lower threshold for mobile
+            rootMargin: isMobile ? '0px 0px 50px 0px' : '0px 0px -20px 0px' // Earlier trigger on mobile
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
+                    // Longer delay for mobile to see animations better
+                    const delay = isMobile ? index * 300 : index * 150;
+                    setTimeout(() => {
+                        entry.target.classList.add('revealed');
+                    }, delay);
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
@@ -244,7 +311,16 @@
         );
         
         animateElements.forEach(el => {
+            el.classList.add('reveal-element');
             observer.observe(el);
+        });
+
+        // Re-initialize on resize
+        window.addEventListener('resize', () => {
+            // Reinitialize with new settings if screen size changes
+            if ((window.innerWidth <= 768) !== isMobile) {
+                location.reload(); // Simple solution for responsive changes
+            }
         });
     }
 
@@ -298,7 +374,7 @@
         }
     }
 
-        // Accessibility enhancements
+    // Accessibility enhancements
     function initAccessibilityFeatures() {
         // Manage focus for keyboard users
         const focusableElements = 'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
