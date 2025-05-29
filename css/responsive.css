@@ -84,15 +84,23 @@
         z-index: 10001;
     }
     
-    /* Hero */
+    /* Hero Mobile Fix */
+    .hero-title {
+        font-size: var(--font-size-3xl);
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .hero-subtitle {
+        font-size: var(--font-size-base);
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
     .hero-container {
         grid-template-columns: 1fr;
         gap: var(--space-2xl);
         text-align: center;
-    }
-    
-    .hero-title {
-        font-size: var(--font-size-3xl);
     }
     
     .hero-stats {
@@ -186,6 +194,8 @@
     .hero-title {
         font-size: var(--font-size-2xl);
         line-height: 1.1;
+        opacity: 1 !important;
+        transform: none !important;
     }
     
     .hero-subtitle {
